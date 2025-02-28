@@ -1,7 +1,11 @@
 # StudentNoteManager
 A desktop application for students marks and deliberation
 
-# First clone the project
+# Generate ssh keys
+ssh-keygen -t rsa -b 4096 -C "your_email_addresse"
+cat ~/.ssh/id_rsa.pub
+
+# Clone the project
 git clone https://github.com/jamonotech/StudentNoteManager.git
 
 or
