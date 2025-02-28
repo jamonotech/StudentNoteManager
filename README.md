@@ -18,3 +18,5 @@ git push origin develop
 
 # To retrieve latest changes in the main branch
 git pull origin develop
+
+Good luck!
