@@ -41,4 +41,4 @@ mvn clean install
 mvn exec:java -Dexec.mainClass="m1.uasz.sn.MainApp"
 
 
-Bismillah!
+Bismillah! Good luck!
