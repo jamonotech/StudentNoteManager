@@ -21,4 +21,10 @@ git push origin develop
 # To retrieve latest changes in the main branch
 git pull origin develop
 
+# Compile and run project
+mvn compile exec:java -Dexec.mainClass="m1.uasz.sn.MainApp"
+    or
+mvn clean install
+mvn exec:java -Dexec.mainClass="m1.uasz.sn.MainApp"
+
 Good luck!
