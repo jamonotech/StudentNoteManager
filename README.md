@@ -3,6 +3,7 @@ A desktop application for students marks and deliberation
 
 # Generate ssh keys
 ssh-keygen -t rsa -b 4096 -C "your_email_addresse"
+
 cat ~/.ssh/id_rsa.pub
 
 # Clone the project
