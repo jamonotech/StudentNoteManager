@@ -3,7 +3,9 @@ A desktop application for students marks and deliberation
 
 # First clone the project
 git clone https://github.com/jamonotech/StudentNoteManager.git
-    or
+
+or
+
 git clone git@github.com:jamonotech/StudentNoteManager.git
 
 # To create a branch and switch to it
@@ -23,8 +25,11 @@ git pull origin develop
 
 # Compile and run project
 mvn compile exec:java -Dexec.mainClass="m1.uasz.sn.MainApp"
-    or
+
+or
+
 mvn clean install
 mvn exec:java -Dexec.mainClass="m1.uasz.sn.MainApp"
 
-Good luck!
+
+Bismillah!
