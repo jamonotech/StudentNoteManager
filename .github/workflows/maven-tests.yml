@@ -1,0 +1,36 @@
+name: Vérification Maven sur Pull Request
+
+# Déclencher la pipeline sur les pull requests vers la branche principale
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    name: Exécuter les tests Maven
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code source
+        uses: actions/checkout@v3
+
+      - name: Configurer Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Vérifier les conflits de merge
+        run: |
+          git fetch origin develop
+          if ! git merge --no-commit --no-ff origin/develop; then
+            echo "❌ Conflit détecté avec la branche principale."
+            exit 1
+          fi
+          
+      - name: Compiler et tester avec Maven
+        run: mvn clean verify
+
+      - name: Nettoyer le répertoire
+        run: mvn clean
