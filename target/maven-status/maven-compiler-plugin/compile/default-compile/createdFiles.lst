@@ -8,7 +8,7 @@ m1/uasz/sn/dao/GenericDAO.class
 m1/uasz/sn/dao/FormationDAO.class
 m1/uasz/sn/ui/MainFrame.class
 m1/uasz/sn/models/Module.class
-m1/uasz/sn/models/Note.class
 m1/uasz/sn/dao/EtudiantDAO.class
+m1/uasz/sn/models/Note.class
 m1/uasz/sn/dao/NoteDAO.class
 m1/uasz/sn/dao/ModuleDAO.class
