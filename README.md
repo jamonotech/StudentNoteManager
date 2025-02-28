@@ -27,7 +27,7 @@ git add .
 git commit -m "your message here"
 
 # To push your changes from your local machine
-git push origin develop
+git push origin ndoya
 
 # To retrieve latest changes in the main branch
 git pull origin develop
