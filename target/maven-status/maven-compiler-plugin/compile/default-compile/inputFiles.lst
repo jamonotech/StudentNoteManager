@@ -1,0 +1,14 @@
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/MainApp.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/dao/EnseignantDAO.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/dao/EtudiantDAO.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/dao/FormationDAO.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/dao/GenericDAO.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/dao/ModuleDAO.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/dao/NoteDAO.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/models/Enseignant.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/models/Etudiant.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/models/Formation.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/models/Module.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/models/Note.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/ui/LoginFrame.java
+/home/mnck/Téléchargements/Master/M1/PA/Projects/StudentNoteManager/src/main/java/m1/uasz/sn/ui/MainFrame.java
