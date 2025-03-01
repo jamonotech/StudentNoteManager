@@ -1,9 +1,8 @@
-# Link repository
-
-https://github.com/jamonotech/StudentNoteManager
-
 # StudentNoteManager
 A desktop application for students marks and deliberation
+
+# Link repository
+https://github.com/jamonotech/StudentNoteManager
 
 # Generate ssh keys
 ssh-keygen -t rsa -b 4096 -C "your_email_addresse"
