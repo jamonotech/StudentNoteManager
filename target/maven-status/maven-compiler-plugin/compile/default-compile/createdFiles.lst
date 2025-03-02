@@ -1,5 +1,13 @@
 m1/uasz/sn/dao/EnseignantDAO.class
 m1/uasz/sn/dao/GenericDAO.class
+<<<<<<< HEAD
+=======
+m1/uasz/sn/dao/FormationDAO.class
+m1/uasz/sn/ui/MainFrame.class
+m1/uasz/sn/models/Module.class
+m1/uasz/sn/dao/EtudiantDAO.class
+m1/uasz/sn/models/Note.class
+>>>>>>> 5de9cbf0c6c9cc119ef79c2116569ca3ce05c657
 m1/uasz/sn/dao/NoteDAO.class
 m1/uasz/sn/dao/FormationDAO.class
 m1/uasz/sn/MainApp.class

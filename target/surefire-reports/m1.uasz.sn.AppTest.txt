@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: m1.uasz.sn.AppTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.041 s -- in m1.uasz.sn.AppTest
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.02 sec
+>>>>>>> 5de9cbf0c6c9cc119ef79c2116569ca3ce05c657

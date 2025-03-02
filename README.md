@@ -1,7 +1,15 @@
 # StudentNoteManager
 A desktop application for students marks and deliberation
 
-# First clone the project
+# Link repository
+https://github.com/jamonotech/StudentNoteManager
+
+# Generate ssh keys
+ssh-keygen -t rsa -b 4096 -C "your_email_addresse"
+
+cat ~/.ssh/id_rsa.pub
+
+# Clone the project
 git clone https://github.com/jamonotech/StudentNoteManager.git
 
 or
@@ -18,7 +26,7 @@ git add .
 git commit -m "your message here"
 
 # To push your changes from your local machine
-git push origin develop
+git push origin ndoya
 
 # To retrieve latest changes in the main branch
 git pull origin develop
@@ -32,4 +40,4 @@ mvn clean install
 mvn exec:java -Dexec.mainClass="m1.uasz.sn.MainApp"
 
 
-Bismillah!
+Bismillah!!!
