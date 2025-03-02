@@ -28,6 +28,7 @@ public abstract class GenericDAO<T, ID> {
     public List<T> findAll() {
         return em.createQuery("FROM " + entityClass.getSimpleName(), entityClass).getResultList();
     }
+    
 
     public void update(T entity) {
         em.getTransaction().begin();
