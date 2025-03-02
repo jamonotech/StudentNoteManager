@@ -1,9 +1,10 @@
 package m1.uasz.sn.dao;
 
+import java.util.List;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import java.util.List;
 
 public abstract class GenericDAO<T, ID> {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("club_persistence_unit");
@@ -20,7 +21,7 @@ public abstract class GenericDAO<T, ID> {
         em.getTransaction().commit();
     }
 
-    public T findById(ID id) {  // Modification pour accepter tout type d'ID
+    public T findById(Long id) {  // Modification pour accepter tout type d'ID
         return em.find(entityClass, id);
     }
 
@@ -34,7 +35,7 @@ public abstract class GenericDAO<T, ID> {
         em.getTransaction().commit();
     }
 
-    public void delete(ID id) {  // Modification pour accepter tout type d'ID
+    public void delete(Long id) {  // Modification pour accepter tout type d'ID
         em.getTransaction().begin();
         T entity = em.find(entityClass, id);
         if (entity != null) em.remove(entity);
