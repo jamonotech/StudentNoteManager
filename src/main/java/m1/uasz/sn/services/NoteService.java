@@ -1,8 +1,10 @@
 package m1.uasz.sn.services;
 
-import m1.uasz.sn.dao.NoteDAO;
-import m1.uasz.sn.models.*;
 import java.util.List;
+import java.util.Map;
+
+import m1.uasz.sn.dao.NoteDAO;
+import m1.uasz.sn.models.Note;
 
 public class NoteService {
     private final NoteDAO noteDAO;
@@ -37,5 +39,17 @@ public class NoteService {
 
     public double calculerMoyenne(Long etudiantId) {
         return noteDAO.calculerMoyenne(etudiantId);
+    }
+    public  void deliberer(){
+        noteDAO.deliberer();
+    }
+    // public  List<Etudiant> listerAdmis(){
+    //     return EtudiantDAO.findAll();
+    // }
+    public  double calculerTauxReussite(){
+        return noteDAO.calculerTauxReussite();
+    }
+    public  Map<String, Integer> statistiquesMentions(){
+        return noteDAO.statistiquesMentions();
     }
 }

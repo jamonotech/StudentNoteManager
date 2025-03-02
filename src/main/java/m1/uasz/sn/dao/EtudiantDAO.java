@@ -11,4 +11,19 @@ public class EtudiantDAO extends GenericDAO<Etudiant, String> {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'inscrireEtudiantAFormation'");
     }
+
+    public void desincrireEtudiantAFormation(long etudiantId, long formationId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'desincrireEtudiantAFormation'");
+    }
+
+    public void inscrireEtudiantAModole(Long etudiantId, Long formationId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'inscrireEtudiantAModole'");
+    }
+
+    public void desincrireEtudiantAModule(long etudiantId, long formationId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'desincrireEtudiantAModule'");
+    }
 }

@@ -35,4 +35,13 @@ public class EtudiantService {
     public void inscrireEtudiantAFormation(Long etudiantId, Long formationId) {
         etudiantDAO.inscrireEtudiantAFormation(etudiantId, formationId);
     }
+    public  void desincrireEtudiantAFormation(long etudiantId,long formationId){
+        etudiantDAO.desincrireEtudiantAFormation(etudiantId,formationId);
+    }
+    public void inscrireEtudiantAModole(Long etudiantId, Long formationId) {
+        etudiantDAO.inscrireEtudiantAModole(etudiantId, formationId);
+    }
+    public  void desincrireEtudiantAModule(long etudiantId,long formationId){
+        etudiantDAO.desincrireEtudiantAModule(etudiantId,formationId);
+    }
 }
