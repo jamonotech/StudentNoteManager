@@ -1,0 +1,31 @@
+# Ignorer les fichiers binaires et les compilations
+/target/
+*.class
+
+# Ignorer les fichiers de configuration personnels
+/.idea/
+/*.iml
+/.vscode/
+
+# Ignorer les fichiers de logs
+/logs/
+/*.log
+
+# Ignorer les fichiers Maven et dépendances locales
+/.mvn/
+/mvnw
+/mvnw.cmd
+
+# Ignorer les fichiers système (Windows / macOS)
+.DS_Store
+Thumbs.db
+
+# Ignorer les fichiers spécifiques à Java et Lombok
+*.war
+*.jar
+*.swp
+/lombok.config
+
+# Ignorer la configuration de la base de données
+/src/main/resources/META-INF/persistence.xml
+

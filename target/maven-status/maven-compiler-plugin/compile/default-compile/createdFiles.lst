@@ -1,14 +1,26 @@
-m1/uasz/sn/models/Formation.class
-m1/uasz/sn/MainApp.class
-m1/uasz/sn/models/Enseignant.class
-m1/uasz/sn/models/Etudiant.class
-m1/uasz/sn/ui/LoginFrame.class
 m1/uasz/sn/dao/EnseignantDAO.class
 m1/uasz/sn/dao/GenericDAO.class
+<<<<<<< HEAD
+=======
 m1/uasz/sn/dao/FormationDAO.class
 m1/uasz/sn/ui/MainFrame.class
 m1/uasz/sn/models/Module.class
 m1/uasz/sn/dao/EtudiantDAO.class
 m1/uasz/sn/models/Note.class
+>>>>>>> 5de9cbf0c6c9cc119ef79c2116569ca3ce05c657
 m1/uasz/sn/dao/NoteDAO.class
+m1/uasz/sn/dao/FormationDAO.class
+m1/uasz/sn/MainApp.class
+m1/uasz/sn/models/Note.class
+m1/uasz/sn/ui/LoginFrame.class
+m1/uasz/sn/models/Module.class
+m1/uasz/sn/models/Formation.class
+m1/uasz/sn/models/Utilisateur.class
 m1/uasz/sn/dao/ModuleDAO.class
+m1/uasz/sn/models/Enseignant.class
+m1/uasz/sn/ui/MainFrame.class
+m1/uasz/sn/models/Etudiant.class
+m1/uasz/sn/dao/UtilisateurDAO.class
+m1/uasz/sn/dao/EtudiantDAO.class
+m1/uasz/sn/models/Utilisateur$Role.class
+m1/uasz/sn/services/UtilisateurService.class
