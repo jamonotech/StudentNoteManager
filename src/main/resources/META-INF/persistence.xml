@@ -6,8 +6,8 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestion_notes?serverTimezone=UTC"/>
-            <property name="jakarta.persistence.jdbc.user" value="root"/>
-            <property name="jakarta.persistence.jdbc.password" value="0002"/>
+            <property name="jakarta.persistence.jdbc.user" value="ndoya"/>
+            <property name="jakarta.persistence.jdbc.password" value="sukunevie"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
