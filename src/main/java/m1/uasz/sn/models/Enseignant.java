@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Enseignant {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private String matricule;
     private String prenoms;
     private String nom;
