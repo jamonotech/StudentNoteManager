@@ -3,6 +3,8 @@ package m1.uasz.sn.services;
 import m1.uasz.sn.dao.UtilisateurDAO;
 import m1.uasz.sn.models.Utilisateur;
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.List;
 import java.util.Optional;
 
 public class UtilisateurService {
@@ -14,7 +16,7 @@ public class UtilisateurService {
     }
 
     public boolean inscrire(String email, String motDePasse, Utilisateur.Role role) {
-        if (utilisateurDAO.trouverParEmail(email).isPresent()) {
+        if (utilisateurDAO.existeEmail(email)) {
             return false;
         }
 
@@ -42,5 +44,21 @@ public class UtilisateurService {
 
     public Utilisateur getUtilisateurConnecte() {
         return utilisateurConnecte;
+    }
+
+    public List<Utilisateur> findAll() {
+        return utilisateurDAO.findAll();
+    }
+
+    public Optional<Utilisateur> findById(Long id) {
+        return utilisateurDAO.trouverParId(id);
+    }
+
+    public void supprimerUtilisateur(Long id) {
+        utilisateurDAO.supprimerParId(id);
+    }
+
+    public void mettreAJourUtilisateur(Utilisateur utilisateur) {
+        utilisateurDAO.mettreAJour(utilisateur);
     }
 }
