@@ -5,60 +5,76 @@ import m1.uasz.sn.models.Utilisateur;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
-import java.util.Optional;
 
 public class UtilisateurService {
-    private final UtilisateurDAO utilisateurDAO;
+    private UtilisateurDAO utilisateurDAO;
     private Utilisateur utilisateurConnecte;
 
-    public UtilisateurService(UtilisateurDAO utilisateurDAO) {
-        this.utilisateurDAO = utilisateurDAO;
+    public UtilisateurService() {
+        this.utilisateurDAO = new UtilisateurDAO();
     }
 
-    public boolean inscrire(String email, String motDePasse, Utilisateur.Role role) {
-        if (utilisateurDAO.existeEmail(email)) {
-            return false;
-        }
-
-        String hash = BCrypt.hashpw(motDePasse, BCrypt.gensalt());
-        Utilisateur utilisateur = new Utilisateur(null, email, hash, role);
+    public void ajouterUtilisateur(Utilisateur utilisateur) {
         utilisateurDAO.create(utilisateur);
-        return true;
     }
 
-    public boolean authentifier(String email, String motDePasse) {
-        Optional<Utilisateur> utilisateurOpt = utilisateurDAO.trouverParEmail(email);
-        if (utilisateurOpt.isPresent()) {
-            Utilisateur utilisateur = utilisateurOpt.get();
-            if (BCrypt.checkpw(motDePasse, utilisateur.getMotDePasse())) {
-                utilisateurConnecte = utilisateur;
-                return true;
-            }
+    public Utilisateur trouverUtilisateur(Long id) {
+        return utilisateurDAO.findById(id);
+    }
+
+    public List<Utilisateur> listerUtilisateurs() {
+        return utilisateurDAO.findAll();
+    }
+
+    public void modifierUtilisateur(Utilisateur utilisateur) {
+        utilisateurDAO.update(utilisateur);
+    }
+
+    public void supprimerUtilisateur(Utilisateur utilisateur) {
+        utilisateurDAO.delete(utilisateur);
+    }
+
+    /**
+     * Enregistre un utilisateur après avoir vérifié s'il existe déjà
+     */
+    public void enregistrerUtilisateur(Utilisateur utilisateur, String password) {
+        // Vérifier si un utilisateur avec cet email existe déjà
+        Utilisateur existant = utilisateurDAO.findByEmail(utilisateur.getEmail());
+
+        if (existant != null) {
+            System.out.println("L'utilisateur avec l'email " + utilisateur.getEmail() + " existe déjà !");
+            return;
         }
-        return false;
+
+        // Hachage du mot de passe avant stockage
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        utilisateur.setPassword(hashedPassword);
+        utilisateurDAO.create(utilisateur);
+        System.out.println("Utilisateur enregistré avec succès !");
     }
 
-    public void deconnecter() {
-        utilisateurConnecte = null;
+    /**
+     * Authentifie un utilisateur en vérifiant ses identifiants
+     */
+    public Utilisateur connexion(String email, String password) {
+        Utilisateur utilisateur = utilisateurDAO.findByEmail(email);
+
+        if (utilisateur != null && BCrypt.checkpw(password, utilisateur.getPassword())) {
+            this.utilisateurConnecte = utilisateur;
+            System.out.println("Connexion réussie pour " + email);
+            return utilisateur;
+        }
+
+        System.out.println("Échec de connexion : email ou mot de passe incorrect !");
+        return null;
+    }
+
+    public void deconnexion() {
+        this.utilisateurConnecte = null;
+        System.out.println("Déconnexion réussie.");
     }
 
     public Utilisateur getUtilisateurConnecte() {
         return utilisateurConnecte;
-    }
-
-    public List<Utilisateur> findAll() {
-        return utilisateurDAO.findAll();
-    }
-
-    public Optional<Utilisateur> findById(Long id) {
-        return utilisateurDAO.trouverParId(id);
-    }
-
-    public void supprimerUtilisateur(Long id) {
-        utilisateurDAO.supprimerParId(id);
-    }
-
-    public void mettreAJourUtilisateur(Utilisateur utilisateur) {
-        utilisateurDAO.mettreAJour(utilisateur);
     }
 }

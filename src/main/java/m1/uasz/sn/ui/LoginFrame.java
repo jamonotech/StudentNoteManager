@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
 public class LoginFrame extends JFrame {
-    private final UtilisateurService utilisateurService = new UtilisateurService(new UtilisateurDAO());
+    private final UtilisateurService utilisateurService = new UtilisateurService();
 
     public LoginFrame() {
         setTitle("JAMONO SCHOOL");
@@ -91,8 +91,8 @@ public class LoginFrame extends JFrame {
         loginButton.addActionListener(e -> {
             String email = emailField.getText();
             String password = new String(passwordField.getPassword());
-
-            if (utilisateurService.authentifier(email, password)) {
+            utilisateurService.connexion(email, password);
+            if (utilisateurService.getUtilisateurConnecte() != null) {
                 JOptionPane.showMessageDialog(this, "Connexion réussie !");
                 new MainFrame(); // Ouvre la fenêtre principale
                 dispose(); // Ferme la fenêtre de connexion

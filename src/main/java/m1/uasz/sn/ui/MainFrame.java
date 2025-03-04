@@ -1,7 +1,7 @@
 package m1.uasz.sn.ui;
 
+import m1.uasz.sn.models.Utilisateur;
 import m1.uasz.sn.ui.components.*;
-import m1.uasz.sn.ui.components.Module;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -79,9 +79,9 @@ public class MainFrame extends JFrame {
         menuPanel.setBackground(new Color(50, 50, 50));
         menuPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 5, 10));
 
-        String[] menuItems = {"Home", "Formations", "Modules", "Étudiants", "Notes", "Résultats", "Enseignants", "Utilisateurs"};
+        String[] menuItems = {"Home", "Formations", "Modules", "Étudiants", "Notes", "Délibérations", "Résultats", "Enseignants", "Statistiques", "Utilisateurs"};
         String[] iconPaths = {"/img/icons/8666691_home_icon.png", "/img/icons/8666671_briefcase_icon.png", "/img/icons/8666759_layers_layer_icon.png", "/img/icons/8666755_users_group_icon.png",
-                "/img/icons/8664843_pen_to_square_icon.png", "/img/icons/8666782_award_prize_icon.png", "/img/icons/8666755_users_group_icon.png", "/img/icons/8664925_circle_user_person_icon.png"};
+                "/img/icons/8664843_pen_to_square_icon.png", "/img/icons/8666782_award_prize_icon.png", "/img/icons/8666782_award_prize_icon.png", "/img/icons/8666755_users_group_icon.png", "/img/icons/8664805_chart_bar_icon.png", "/img/icons/8664925_circle_user_person_icon.png"};
 
         for (int i = 0; i < menuItems.length; i++) {
             JPanel menuItemPanel = new JPanel();
@@ -249,13 +249,15 @@ public class MainFrame extends JFrame {
                     // Met à jour le contenu principal
                     switch (panelIndex) {
                         case 0 -> updateMainContent(new Home());
-                        case 1 -> updateMainContent(new Formation());
-                        case 2 -> updateMainContent(new Module());
-                        case 3 -> updateMainContent(new Etudiant());
-                        case 4 -> updateMainContent(new Note());
+                        case 1 -> updateMainContent(new FormationPanel());
+                        case 2 -> updateMainContent(new ModulePanel());
+                        case 3 -> updateMainContent(new EtudiantPanel());
+                        case 4 -> updateMainContent(new NotePanel());
                         case 5 -> updateMainContent(new Resultat());
-                        case 6 -> updateMainContent(new Enseignant());
-                        case 7 -> updateMainContent(new Utilisateur());
+                        case 6 -> updateMainContent(new GlobalResult());
+                        case 7 -> updateMainContent(new EnseignantPanel());
+                        case 8 -> updateMainContent(new StatistiquesUI());
+                        case 9 -> updateMainContent(new UtilisateurPanel());
                     }
 
                 } else {

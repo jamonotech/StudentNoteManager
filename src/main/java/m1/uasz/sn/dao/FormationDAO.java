@@ -1,23 +1,18 @@
 package m1.uasz.sn.dao;
 
-import java.util.List;
-
-import m1.uasz.sn.models.Enseignant;
+import jakarta.persistence.TypedQuery;
 import m1.uasz.sn.models.Formation;
-import m1.uasz.sn.models.Module;
 
 public class FormationDAO extends GenericDAO<Formation, Long> {
     public FormationDAO() {
         super(Formation.class);
     }
 
-    public List<Module> getModules(Long formationId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getModules'");
-    }
+    public Formation findByName(String name) {
+        TypedQuery<Formation> query = entityManager.createQuery(
+                "SELECT f FROM Formation f WHERE f.nom = :nom", Formation.class);
+        query.setParameter("nom", name);
 
-    public List<Enseignant> getEnseignants(Long formationId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEnseignants'");
+        return query.getResultStream().findFirst().orElse(null);
     }
 }

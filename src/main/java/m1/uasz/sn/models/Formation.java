@@ -20,6 +20,10 @@ public class Formation {
     @OneToMany(mappedBy = "formation")
     private List<Module> modules;
 
+    @ManyToOne
+    @JoinColumn(name = "responsable_id")
+    private ResponsablePedagogique responsablePedagogique;
+
     public Formation() {}
 
     public Formation(String nom, String niveau, String responsableNom, String responsableEmail) {
