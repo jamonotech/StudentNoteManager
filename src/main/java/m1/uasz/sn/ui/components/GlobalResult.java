@@ -3,62 +3,36 @@ package m1.uasz.sn.ui.components;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import m1.uasz.sn.models.Etudiant;
-import m1.uasz.sn.models.Formation;
 import m1.uasz.sn.services.EtudiantService;
-import m1.uasz.sn.services.FormationService;
 
-public class Resultat extends JPanel {
+public class GlobalResult extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
-    private JComboBox<String> formationDropdown;
     private EtudiantService etudiantService;
-    private FormationService formationService;
 
-    public Resultat() {
+    public GlobalResult() {
         etudiantService = new EtudiantService();
-        formationService = new FormationService();
 
         setLayout(new BorderLayout());
 
-        // Menu déroulant pour sélectionner la formation
-        formationDropdown = new JComboBox<>();
-        chargerFormations();
-        formationDropdown.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                chargerResultats();
-            }
-        });
-        add(formationDropdown, BorderLayout.NORTH);
-
-        // Initialisation du modèle de la table
+        // Initialisation du modèle de la table avec le rang ajouté
         String[] columnNames = {"Rang", "INE", "Nom", "Prénom(s)", "Moyenne", "Mention", "Statut"};
         tableModel = new DefaultTableModel(columnNames, 0);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
-    }
 
-    private void chargerFormations() {
-        List<Formation> formations = formationService.listerFormations();
-        formationDropdown.addItem("Sélectionner une formation");
-        for (Formation formation : formations) {
-            formationDropdown.addItem(formation.getNom());
-        }
+        // Charger les résultats
+        chargerResultats();
     }
 
     private void chargerResultats() {
-        String formationNom = (String) formationDropdown.getSelectedItem();
-        if (formationNom.equals("Sélectionner une formation")) return;
+        List<Etudiant> etudiants = etudiantService.listerEtudiants();
+        if (etudiants.isEmpty()) return;
 
-        Formation formation = formationService.trouverFormationParNom(formationNom);
-        if (formation == null) return;
-
-        List<Etudiant> etudiants = etudiantService.listerEtudiantsParFormation(formation);
+        // Trier les étudiants par moyenne décroissante
         etudiants.sort((e1, e2) -> Double.compare(etudiantService.calculerMoyenneEtudiant(e2), etudiantService.calculerMoyenneEtudiant(e1)));
 
         tableModel.setRowCount(0);

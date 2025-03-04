@@ -118,6 +118,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.2</version> <!-- Vérifiez la dernière version -->
+        </dependency>
     </dependencies>
 
     <build>

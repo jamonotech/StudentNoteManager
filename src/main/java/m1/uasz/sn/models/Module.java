@@ -19,13 +19,13 @@ public class Module {
     private int credits;
 
     @ManyToOne
-    private Enseignant enseignant;
+    private Enseignant enseignantResponsable;
 
     @ManyToOne
     private Formation formation;
 
-    @ManyToMany(mappedBy = "modules")
-    private List<Etudiant> etudiants;
+//    @ManyToMany(mappedBy = "modules")
+//    private List<Etudiant> etudiants;
 
     public Module() {}
 
@@ -35,7 +35,7 @@ public class Module {
         this.volumeHoraire = volumeHoraire;
         this.coefficient = coefficient;
         this.credits = credits;
-        this.enseignant = enseignant;
+        this.enseignantResponsable = enseignant;
         this.formation = formation;
     }
 }

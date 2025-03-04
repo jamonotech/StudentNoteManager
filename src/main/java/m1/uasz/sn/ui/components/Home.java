@@ -1,16 +1,25 @@
 package m1.uasz.sn.ui.components;
 
+import m1.uasz.sn.dao.EnseignantDAO;
 import m1.uasz.sn.dao.UtilisateurDAO;
-import m1.uasz.sn.services.UtilisateurService;
+import m1.uasz.sn.models.Etudiant;
+import m1.uasz.sn.services.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
 public class Home extends JPanel {
-    private final UtilisateurService utilisateurService = new UtilisateurService(new UtilisateurDAO());
+    private final UtilisateurService utilisateurService = new UtilisateurService();
+    private final EnseignantService enseignantService = new EnseignantService();
+    private final EtudiantService etudiantService = new EtudiantService();
+    private final FormationService formationService = new FormationService();
+    private final ModuleService moduleService = new ModuleService();
+    private final NoteService noteService = new NoteService();
+    private final StatistiquesService statistiquesService = new StatistiquesService();
 
     public Home() {
         setLayout(new BorderLayout());
@@ -28,7 +37,7 @@ public class Home extends JPanel {
         add(breadcrumbPanel, BorderLayout.NORTH);
 
         // Titre principal
-        JLabel welcomeLabel = new JLabel("Statistiques JAMONO SCHOOL", SwingConstants.CENTER);
+        JLabel welcomeLabel = new JLabel("BOARD JAMONO SCHOOL", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
         welcomeLabel.setForeground(Color.decode("#333333"));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
@@ -44,12 +53,20 @@ public class Home extends JPanel {
         statsPanel.setBackground(Color.decode("#F4F4F4"));
         statsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        statsPanel.add(createStatCard("Etudiants", String.valueOf(utilisateurService.findAll().size()), getResizedIcon("/img/icons/8666755_users_group_icon.png", 65, 65)));
-        statsPanel.add(createStatCard("Professeurs", String.valueOf(utilisateurService.findAll().size()), getResizedIcon("/img/icons/8664831_user_icon.png", 65, 65)));
-        statsPanel.add(createStatCard("Formations", String.valueOf(utilisateurService.findAll().size()), getResizedIcon("/img/icons/8666671_briefcase_icon.png", 65, 65)));
-        statsPanel.add(createStatCard("Modules", String.valueOf(utilisateurService.findAll().size()), getResizedIcon("/img/icons/8666759_layers_layer_icon.png", 65, 65)));
-        statsPanel.add(createStatCard("Taux de réussite", utilisateurService.findAll().size() + "%", getResizedIcon("/img/icons/8666782_award_prize_icon.png", 65, 65)));
-        statsPanel.add(createStatCard("Users", String.valueOf(utilisateurService.findAll().size()), getResizedIcon("/img/icons/8664925_circle_user_person_icon.png", 65, 65)));
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        Etudiant meilleurEtudiant = statistiquesService.getEtudiantMeilleureMoyenne();
+        String majorantText = (meilleurEtudiant != null) ?
+                (meilleurEtudiant.getPrenoms() + " " + meilleurEtudiant.getNom() + " \n" +
+                        df.format(statistiquesService.getMeilleureMoyenne()))
+                : "Aucun étudiant";
+
+        statsPanel.add(createStatCard("TAUX DE REUSSITE", df.format(statistiquesService.getTauxReussite()) + "%", getResizedIcon("/img/icons/8666782_award_prize_icon.png", 65, 65)));
+        statsPanel.add(createStatCard("NOMBRE ADMIS", String.valueOf(statistiquesService.getNombreAdmis()), getResizedIcon("/img/icons/8664877_flag_location_country_icon.png", 65, 65)));
+        statsPanel.add(createStatCard("NOMBRE MENTIONS", String.valueOf(statistiquesService.getNombreMentions()), getResizedIcon("/img/icons/8664803_bookmark_icon.png", 65, 65)));
+        statsPanel.add(createStatCard("MAJORANT ETABLISSEMENT", majorantText, getResizedIcon("/img/icons/8664909_heart_like_icon.png", 65, 65)));
+        statsPanel.add(createStatCard("NOMBRE ETUDIANTS", String.valueOf(statistiquesService.getNombreEtudiants()), getResizedIcon("/img/icons/8666755_users_group_icon.png", 65, 65)));
+        statsPanel.add(createStatCard("NOMBRE FORMATIONS", String.valueOf(statistiquesService.getNombreFormations()), getResizedIcon("/img/icons/8666671_briefcase_icon.png", 65, 65)));
 
         add(statsPanel, BorderLayout.CENTER);
     }
