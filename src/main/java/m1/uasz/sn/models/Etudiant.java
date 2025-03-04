@@ -26,8 +26,11 @@ public class Etudiant {
     @ManyToMany
     private List<Module> modules;
 
-    @OneToMany(mappedBy = "etudiant")
-    private List<Note> notes;
+//    @OneToMany
+//    private Note note;
+
+    @Transient // Ne sera pas stocké en base de données
+    private double moyenne;
 
     public Etudiant() {}
 

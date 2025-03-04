@@ -10,8 +10,8 @@ import lombok.Setter;
 public class Note {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private double controleContinu;
-    private double examen;
+    private double noteCC;
+    private double noteExamen;
 
     @ManyToOne
     private Etudiant etudiant;
@@ -22,11 +22,11 @@ public class Note {
     public Note() {}
 
     public Note(double controleContinu, double examen, Etudiant etudiant, Module module) {
-        this.controleContinu = controleContinu;
-        this.examen = examen;
+        this.noteCC = controleContinu;
+        this.noteExamen = examen;
         this.etudiant = etudiant;
         this.module = module;
     }
 
-    public double calculerMoyenne() { return (controleContinu + examen) / 2; }
+    public double calculerMoyenne() { return (noteCC + noteExamen) / 2; }
 }

@@ -10,21 +10,21 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Enseignant {
-    @Id
+public class Enseignant extends Utilisateur {
     private String matricule;
     private String prenoms;
     private String nom;
     private LocalDate dateNaissance;
     private String sexe;
     private String adresse;
+    @Column(unique = true)
     private String email;
     private String grade;
     private String specialite;
     private String bureau;
     private String institution;
 
-    @OneToMany(mappedBy = "enseignant")
+    @OneToMany(mappedBy = "enseignantResponsable")
     private List<Module> modules;
 
     public Enseignant() {}
