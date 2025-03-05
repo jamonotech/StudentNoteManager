@@ -18,6 +18,10 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLayout(new GridBagLayout());
+        getRootPane().setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        setBackground(new Color(1, 33, 41));
+        getRootPane().setOpaque(false);
+//        getRootPane().setBorder(BorderFactory.createLineBorder(Color.GREEN, 11));
 
         initComponents();
     }
@@ -33,6 +37,7 @@ public class MainFrame extends JFrame {
 
         // Main Content
         mainContent = createMainContent();
+//        mainContent.setOpaque(false);
 
         // Layout Configuration
         gbc.gridx = 0;
@@ -58,9 +63,10 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createSidebar() {
-        JPanel sidebar = new JPanel();
+//        JPanel sidebar = new JPanel();
+        JPanel sidebar = new RoundedSideBar(80, 80, false, true, false, true);
         sidebar.setLayout(new BorderLayout());
-        sidebar.setBackground(new Color(50, 50, 50));
+        sidebar.setBackground(new Color(1, 33, 41));
         sidebar.setPreferredSize(new Dimension(220, getHeight()));
 
         // Logo
@@ -76,7 +82,7 @@ public class MainFrame extends JFrame {
         // Menu Panel
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
-        menuPanel.setBackground(new Color(50, 50, 50));
+        menuPanel.setBackground(new Color(1, 33, 41));
         menuPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 5, 10));
 
         String[] menuItems = {"Home", "Formations", "Modules", "Étudiants", "Notes", "Délibérations", "Résultats", "Enseignants", "Statistiques", "Utilisateurs"};
@@ -88,7 +94,7 @@ public class MainFrame extends JFrame {
             menuItemPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 10)); // Espacement amélioré
             menuItemPanel.setPreferredSize(new Dimension(180, 40)); // Augmente la hauteur des éléments
             menuItemPanel.setMaximumSize(new Dimension(180, 40));
-            menuItemPanel.setBackground(new Color(50, 50, 50));
+            menuItemPanel.setBackground(new Color(1, 33, 41));
             menuItemPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10)); // Ajoute un padding
 
             // Ajout de l'icône
@@ -114,14 +120,14 @@ public class MainFrame extends JFrame {
                 @Override
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
                     if (menuItemPanel != activeMenuItem) {
-                        menuItemPanel.setBackground(new Color(70, 70, 70)); // Effet au survol
+                        menuItemPanel.setBackground(new Color(3, 50, 60)); // Effet au survol
                     }
                 }
 
                 @Override
                 public void mouseExited(java.awt.event.MouseEvent evt) {
                     if (menuItemPanel != activeMenuItem) {
-                        menuItemPanel.setBackground(new Color(50, 50, 50)); // Retour à la couleur de base
+                        menuItemPanel.setBackground(new Color(1, 33, 41)); // Retour à la couleur de base
                     }
                 }
             });
@@ -136,14 +142,16 @@ public class MainFrame extends JFrame {
 
         sidebar.add(logoPanel, BorderLayout.NORTH);
         sidebar.add(menuPanel, BorderLayout.CENTER);
+        menuPanel.setOpaque(false);
+        logoPanel.setOpaque(false);
 
         return sidebar;
     }
 
     private JPanel createTopbar() {
-        JPanel topbar = new JPanel(new BorderLayout());
-        topbar.setBackground(new Color(81, 78, 78));
-        topbar.setPreferredSize(new Dimension(getWidth(), 63));
+        RoundedSideBar topbar = new RoundedSideBar(80, 80, true, true, true, true);
+        topbar.setBackground(new Color(4, 125, 154));
+        topbar.setPreferredSize(new Dimension(getWidth(), 100));
 
         // Left Panel - Navigation Buttons
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
@@ -156,6 +164,7 @@ public class MainFrame extends JFrame {
         iconLabel2.setCursor(new Cursor(Cursor.HAND_CURSOR));
         leftPanel.add(iconLabel1);
         leftPanel.add(iconLabel2);
+        leftPanel.setOpaque(false);
 
         // Center Panel - Search Bar
         JPanel centerPanel = new JPanel();
@@ -163,11 +172,13 @@ public class MainFrame extends JFrame {
         JTextField searchBar = new JTextField(30);
         searchBar.setPreferredSize(new Dimension(300, 30));
         searchBar.setFont(new Font("SansSerif", Font.PLAIN, 16));
+//        searchBar.setBorder(new RoundedBorder(30));
         ImageIcon search = getResizedIcon("/img/icons/8666693_search_icon.png", 30, 30);
         JLabel iconSearch = new JLabel(search);
         iconSearch.setCursor(new Cursor(Cursor.HAND_CURSOR));
         centerPanel.add(searchBar);
         centerPanel.add(iconSearch);
+        centerPanel.setOpaque(false);
 
         // Right Panel - Dropdown Menu with Styled Items
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
@@ -175,7 +186,7 @@ public class MainFrame extends JFrame {
         ImageIcon menuIcon = getResizedIcon("/img/icons/8666601_more_vertical_icon.png", 30, 30);
         JLabel menuLabel = new JLabel(menuIcon);
 
-            // Création du menu déroulant stylisé
+        // Création du menu déroulant stylisé
         JPopupMenu userMenu = new JPopupMenu();
         userMenu.setPreferredSize(new Dimension(180, 150)); // Ajustement de la taille
         userMenu.setBackground(new Color(81, 78, 78)); // Fond gris foncé
@@ -221,6 +232,7 @@ public class MainFrame extends JFrame {
         });
 
         rightPanel.add(menuLabel);
+        rightPanel.setOpaque(false);
 
         // Add panels to topbar
         topbar.add(leftPanel, BorderLayout.WEST);
@@ -242,8 +254,8 @@ public class MainFrame extends JFrame {
                 JPanel menuItem = (JPanel) comp;
 
                 if (panelIndex == activeIndex) {
-                    menuItem.setBackground(new Color(80, 80, 80));
-                    menuItem.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Color.WHITE));
+                    menuItem.setBackground(new Color(3, 50, 60)); // Teinte proche du sidebar
+                    menuItem.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, new Color(100, 200, 255))); // Bordure bleu clair pour un effet moderne
                     activeMenuItem = menuItem;
 
                     // Met à jour le contenu principal
@@ -261,7 +273,7 @@ public class MainFrame extends JFrame {
                     }
 
                 } else {
-                    menuItem.setBackground(new Color(50, 50, 50));
+                    menuItem.setBackground(new Color(1, 33, 41)); // Couleur de fond du sidebar
                     menuItem.setBorder(BorderFactory.createEmptyBorder());
                 }
                 panelIndex++;
