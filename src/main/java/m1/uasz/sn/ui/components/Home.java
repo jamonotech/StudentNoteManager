@@ -1,7 +1,5 @@
 package m1.uasz.sn.ui.components;
 
-import m1.uasz.sn.dao.EnseignantDAO;
-import m1.uasz.sn.dao.UtilisateurDAO;
 import m1.uasz.sn.models.Etudiant;
 import m1.uasz.sn.services.*;
 
@@ -12,29 +10,14 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
-public class Home extends JPanel {
-    private final UtilisateurService utilisateurService = new UtilisateurService();
-    private final EnseignantService enseignantService = new EnseignantService();
-    private final EtudiantService etudiantService = new EtudiantService();
-    private final FormationService formationService = new FormationService();
-    private final ModuleService moduleService = new ModuleService();
-    private final NoteService noteService = new NoteService();
+public class Home extends RoundedSideBar {
     private final StatistiquesService statistiquesService = new StatistiquesService();
 
     public Home() {
+        super(80, 80, true, true, true, true);
+        setPreferredSize(new Dimension(getWidth(), getHeight()));
         setLayout(new BorderLayout());
-        setBackground(Color.decode("#F4F4F4")); // Fond gris clair
-
-        // Barre de navigation (breadcrumb)
-        JPanel breadcrumbPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        breadcrumbPanel.setBackground(Color.decode("#F4F4F4"));
-
-        JLabel breadcrumbLabel = new JLabel("Dashboard > HOME");
-        breadcrumbLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        breadcrumbLabel.setForeground(Color.decode("#666666"));
-
-        breadcrumbPanel.add(breadcrumbLabel);
-        add(breadcrumbPanel, BorderLayout.NORTH);
+        setBackground(new Color(4, 125, 154)); // Fond gris clair
 
         // Titre principal
         JLabel welcomeLabel = new JLabel("BOARD JAMONO SCHOOL", SwingConstants.CENTER);
@@ -43,14 +26,13 @@ public class Home extends JPanel {
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
 
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(Color.decode("#F4F4F4"));
-        headerPanel.add(breadcrumbPanel, BorderLayout.WEST);
+//        headerPanel.setBackground(Color.decode("#F4F4F4"));
         headerPanel.add(welcomeLabel, BorderLayout.CENTER);
         add(headerPanel, BorderLayout.NORTH);
 
         // Grille des statistiques
         JPanel statsPanel = new JPanel(new GridLayout(2, 3, 20, 20));
-        statsPanel.setBackground(Color.decode("#F4F4F4"));
+//        statsPanel.setBackground(Color.decode("#F4F4F4"));
         statsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         DecimalFormat df = new DecimalFormat("0.00");
@@ -68,6 +50,9 @@ public class Home extends JPanel {
         statsPanel.add(createStatCard("NOMBRE ETUDIANTS", String.valueOf(statistiquesService.getNombreEtudiants()), getResizedIcon("/img/icons/8666755_users_group_icon.png", 65, 65)));
         statsPanel.add(createStatCard("NOMBRE FORMATIONS", String.valueOf(statistiquesService.getNombreFormations()), getResizedIcon("/img/icons/8666671_briefcase_icon.png", 65, 65)));
 
+        headerPanel.setOpaque(false);
+        statsPanel.setOpaque(false);
+
         add(statsPanel, BorderLayout.CENTER);
     }
 
@@ -77,7 +62,7 @@ public class Home extends JPanel {
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        card.setOpaque(false);
+        card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
                 BorderFactory.createEmptyBorder(10, 10, 10, 10)
