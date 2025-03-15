@@ -21,7 +21,7 @@ public class ResponsablePedagogiqueService {
     }
 
     public void ajouterResponsable(ResponsablePedagogique responsable) {
-        responsablePedagogiqueDAO.create(responsable);
+        responsablePedagogiqueDAO.createResp(responsable);
     }
 
     public ResponsablePedagogique trouverResponsable(Long id) {

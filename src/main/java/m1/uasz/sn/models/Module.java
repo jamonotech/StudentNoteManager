@@ -24,8 +24,8 @@ public class Module {
     @ManyToOne
     private Formation formation;
 
-//    @ManyToMany(mappedBy = "modules")
-//    private List<Etudiant> etudiants;
+    @ManyToMany
+    private List<Etudiant> etudiants;
 
     public Module() {}
 

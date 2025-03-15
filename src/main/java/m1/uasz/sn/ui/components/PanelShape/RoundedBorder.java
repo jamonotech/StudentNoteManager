@@ -1,4 +1,4 @@
-package m1.uasz.sn.ui.components;
+package m1.uasz.sn.ui.components.PanelShape;
 
 import javax.swing.border.Border;
 import java.awt.*;

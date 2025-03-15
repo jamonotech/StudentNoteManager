@@ -1,7 +1,23 @@
 package m1.uasz.sn.ui;
 
 import m1.uasz.sn.models.Utilisateur;
+import m1.uasz.sn.services.UtilisateurService;
 import m1.uasz.sn.ui.components.*;
+import m1.uasz.sn.ui.components.Action_Validation.ComponentAction;
+import m1.uasz.sn.ui.components.Action_Validation.ComponentValidation;
+import m1.uasz.sn.ui.components.Enseignant.EnseignantPanel;
+import m1.uasz.sn.ui.components.Etudiant.EtudiantPanel;
+import m1.uasz.sn.ui.components.Formation.FormationPanel;
+import m1.uasz.sn.ui.components.Forms.Formulaire11ChampsFrame;
+import m1.uasz.sn.ui.components.Module.ModulePanel;
+import m1.uasz.sn.ui.components.Note.NotePanel;
+import m1.uasz.sn.ui.components.PanelShape.*;
+import m1.uasz.sn.ui.components.Results.GlobalResult;
+import m1.uasz.sn.ui.components.Results.Resultat;
+import m1.uasz.sn.ui.components.Results.StatistiquesUI;
+import m1.uasz.sn.ui.components.Users.ProfileUser;
+import m1.uasz.sn.ui.components.Users.UtilisateurPanel;
+import m1.uasz.sn.utils.SessionManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,6 +26,8 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
 public class MainFrame extends JFrame {
+    private UtilisateurService utilisateurService = new UtilisateurService();
+
     private JPanel activeMenuItem = null;
     private JPanel mainContent = new Home();
 
@@ -149,7 +167,7 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createTopbar() {
-        RoundedSideBar topbar = new RoundedSideBar(80, 80, true, true, true, true);
+        RoundedSideBar topbar = new RoundedSideBar(80, 80, true, true, false, false);
         topbar.setBackground(new Color(4, 125, 154));
         topbar.setPreferredSize(new Dimension(getWidth(), 100));
 
@@ -162,6 +180,22 @@ public class MainFrame extends JFrame {
         iconLabel1.setCursor(new Cursor(Cursor.HAND_CURSOR));
         JLabel iconLabel2 = new JLabel(directionRight);
         iconLabel2.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Listeners pour les boutons de navigation
+        iconLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                System.out.println("Bouton gauche cliqué !");
+            }
+        });
+
+        iconLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                System.out.println("Bouton droit cliqué !");
+            }
+        });
+
         leftPanel.add(iconLabel1);
         leftPanel.add(iconLabel2);
         leftPanel.setOpaque(false);
@@ -172,15 +206,24 @@ public class MainFrame extends JFrame {
         JTextField searchBar = new JTextField(30);
         searchBar.setPreferredSize(new Dimension(300, 30));
         searchBar.setFont(new Font("SansSerif", Font.PLAIN, 16));
-//        searchBar.setBorder(new RoundedBorder(30));
+
         ImageIcon search = getResizedIcon("/img/icons/8666693_search_icon.png", 30, 30);
         JLabel iconSearch = new JLabel(search);
         iconSearch.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Listener pour l'icône de recherche
+        iconSearch.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                System.out.println("Recherche : " + searchBar.getText());
+            }
+        });
+
         centerPanel.add(searchBar);
         centerPanel.add(iconSearch);
         centerPanel.setOpaque(false);
 
-        // Right Panel - Dropdown Menu with Styled Items
+        // Right Panel - Dropdown Menu
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         rightPanel.setOpaque(false);
         ImageIcon menuIcon = getResizedIcon("/img/icons/8666601_more_vertical_icon.png", 30, 30);
@@ -188,39 +231,52 @@ public class MainFrame extends JFrame {
 
         // Création du menu déroulant stylisé
         JPopupMenu userMenu = new JPopupMenu();
-        userMenu.setPreferredSize(new Dimension(180, 150)); // Ajustement de la taille
-        userMenu.setBackground(new Color(81, 78, 78)); // Fond gris foncé
+        userMenu.setPreferredSize(new Dimension(180, 150));
+        userMenu.setBackground(new Color(1, 33, 41));
 
-        String[] menuOptions = {"Connexion", "Déconnexion", "S'inscrire", "Profil"};
+        String[] menuOptions = {"Connexion", "Déconnexion", "New User", "Profil"};
         String[] menuIcons = {"/img/icons/8666692_power_icon.png", "/img/icons/8666757_lock_security_icon.png",
                 "/img/icons/8666546_user_plus_icon.png", "/img/icons/8664913_sun_sunny_weather_icon.png"};
 
+        Utilisateur user = utilisateurService.getUtilisateurConnecte();
+
         for (int i = 0; i < menuOptions.length; i++) {
-            JMenuItem item = new JMenuItem(menuOptions[i]);
-            item.setFont(new Font("SansSerif", Font.PLAIN, 16));
-            item.setForeground(Color.WHITE);
-            item.setBackground(new Color(81, 78, 78));
-            item.setOpaque(true);
-            item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+            if (user != null && !menuOptions[i].equals("Connexion")) {
+                if (user.getRole().equals("RESPONSABLE") || !menuOptions[i].equals("New User")) {
+                    JMenuItem item = createStyledMenuItem(menuOptions[i], menuIcons[i]);
 
-            // Assigner directement l'icône au JMenuItem
-            ImageIcon icon = getResizedIcon(menuIcons[i], 25, 25);
-            item.setIcon(icon);
+                    // Ajout des actions spécifiques aux éléments du menu
+                    switch (menuOptions[i]) {
+                        case "Déconnexion":
+                            item.addActionListener(e -> {
+                                utilisateurService.deconnexion();
 
-            // Effet au survol
-            item.addMouseListener(new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseEntered(java.awt.event.MouseEvent evt) {
-                    item.setBackground(new Color(100, 100, 100));
+                                // Fermer toutes les fenêtres ouvertes et ouvrir LoginFrame
+                                Window[] windows = Window.getWindows();
+                                for (Window window : windows) {
+                                    if (window instanceof JFrame) {
+                                        window.dispose();
+                                    }
+                                }
+
+                                new LoginFrame();
+                            });
+                            break;
+                        case "Profil":
+                            item.addActionListener(e -> updateMainContent(new ProfileUser(this, user)));
+                            break;
+                        case "New User":
+                            item.addActionListener(e -> {
+                                String[] champs = {"Type", "Nom", "Prénom", "Email", "Mot de Passe", "Confirmer Mot de Passe"};
+                                JTextField[] textFields = new JTextField[champs.length];
+                                new Formulaire11ChampsFrame("Ajouter utilisateur", "create", "users", champs, textFields, 500, 500, new ComponentValidation(), new ComponentAction());
+                            });
+                            break;
+                    }
+
+                    userMenu.add(item);
                 }
-
-                @Override
-                public void mouseExited(java.awt.event.MouseEvent evt) {
-                    item.setBackground(new Color(81, 78, 78));
-                }
-            });
-
-            userMenu.add(item);
+            }
         }
 
         // Afficher le menu au clic sur l'icône
@@ -234,12 +290,43 @@ public class MainFrame extends JFrame {
         rightPanel.add(menuLabel);
         rightPanel.setOpaque(false);
 
-        // Add panels to topbar
+        // Ajouter les panels à la topbar
         topbar.add(leftPanel, BorderLayout.WEST);
         topbar.add(centerPanel, BorderLayout.CENTER);
         topbar.add(rightPanel, BorderLayout.EAST);
 
         return topbar;
+    }
+
+    /**
+     * Méthode pour créer un JMenuItem stylisé avec icône et effet au survol.
+     */
+    private JMenuItem createStyledMenuItem(String text, String iconPath) {
+        JMenuItem item = new JMenuItem(text);
+        item.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        item.setForeground(Color.WHITE);
+        item.setBackground(new Color(1, 33, 41));
+        item.setOpaque(true);
+        item.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        // Assigner l'icône
+        ImageIcon icon = getResizedIcon(iconPath, 25, 25);
+        item.setIcon(icon);
+
+        // Effet au survol
+        item.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                item.setBackground(new Color(3, 50, 60));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                item.setBackground(new Color(1, 33, 41));
+            }
+        });
+
+        return item;
     }
 
     private JPanel createMainContent() {
@@ -261,15 +348,15 @@ public class MainFrame extends JFrame {
                     // Met à jour le contenu principal
                     switch (panelIndex) {
                         case 0 -> updateMainContent(new Home());
-                        case 1 -> updateMainContent(new FormationPanel());
-                        case 2 -> updateMainContent(new ModulePanel());
-                        case 3 -> updateMainContent(new EtudiantPanel());
-                        case 4 -> updateMainContent(new NotePanel());
+                        case 1 -> updateMainContent(new FormationPanel(this));
+                        case 2 -> updateMainContent(new ModulePanel(this));
+                        case 3 -> updateMainContent(new EtudiantPanel(this));
+                        case 4 -> updateMainContent(new NotePanel(this));
                         case 5 -> updateMainContent(new Resultat());
                         case 6 -> updateMainContent(new GlobalResult());
-                        case 7 -> updateMainContent(new EnseignantPanel());
+                        case 7 -> updateMainContent(new EnseignantPanel(this));
                         case 8 -> updateMainContent(new StatistiquesUI());
-                        case 9 -> updateMainContent(new UtilisateurPanel());
+                        case 9 -> updateMainContent(new UtilisateurPanel(this));
                     }
 
                 } else {
@@ -281,7 +368,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void updateMainContent(JPanel newContent) {
+    public void updateMainContent(JPanel newContent) {
         getContentPane().remove(mainContent);
         mainContent = newContent;
         GridBagConstraints gbc = new GridBagConstraints();

@@ -3,6 +3,8 @@ package m1.uasz.sn.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import m1.uasz.sn.dao.EtudiantDAO;
 import m1.uasz.sn.dao.FormationDAO;
 import m1.uasz.sn.dao.ModuleDAO;
@@ -11,6 +13,7 @@ import m1.uasz.sn.models.Etudiant;
 import m1.uasz.sn.models.Formation;
 import m1.uasz.sn.models.Module;
 import m1.uasz.sn.models.Note;
+import org.hibernate.Hibernate;
 
 public class EtudiantService {
     private EtudiantDAO etudiantDAO;
@@ -62,46 +65,76 @@ public class EtudiantService {
         Formation formation = formationDAO.findById(formationId);
 
         if (etudiant != null && formation != null) {
+            Hibernate.initialize(etudiant.getModules());
+            Hibernate.initialize(formation.getModules());
+
             etudiant.setFormation(formation);
+            etudiant.setModules(formation.getModules());
+            formation.getModules().forEach(e -> {
+                Hibernate.initialize(e.getEtudiants());
+                e.getEtudiants().add(etudiant);
+                moduleDAO.update(e);
+            });
             etudiantDAO.update(etudiant);
+            formationDAO.update(formation);
             System.out.println("L'étudiant " + etudiant.getNom() + " a été inscrit à la formation " + formation.getNom());
         } else {
             System.out.println("Étudiant ou formation introuvable.");
         }
     }
 
-    public void desinscrireEtudiantFormation(String ine) {
+    public void desinscrireEtudiantFormation(String ine, Long formationId) {
         Etudiant etudiant = etudiantDAO.findById(ine);
+        Formation formation = formationDAO.findById(formationId);
 
-        if (etudiant != null) {
+        if (etudiant != null && formation != null) {
+            Hibernate.initialize(etudiant.getModules());
+            Hibernate.initialize(formation.getModules());
+
+            etudiant.getModules().removeAll(formation.getModules());
+            formation.getModules().forEach(e -> {
+                Hibernate.initialize(e.getEtudiants());
+                e.getEtudiants().remove(etudiant);
+                moduleDAO.update(e);
+            });
             etudiant.setFormation(null);
             etudiantDAO.update(etudiant);
+            formationDAO.update(formation);
             System.out.println("L'étudiant " + etudiant.getNom() + " a été désinscrit de sa formation.");
         } else {
             System.out.println("Étudiant introuvable.");
         }
     }
 
-    public void inscrireEtudiantModule(String ine, Long moduleCode) {
+    public void inscrireEtudiantModule(String ine, String moduleCode) {
         Etudiant etudiant = etudiantDAO.findById(ine);
-        Module module = moduleDAO.findById(moduleCode);
+        Module module = moduleDAO.findByCode(moduleCode);
 
         if (etudiant != null && module != null) {
+            Hibernate.initialize(etudiant.getModules());
+            Hibernate.initialize(module.getEtudiants());
             etudiant.getModules().add(module);
+            module.getEtudiants().add(etudiant);
             etudiantDAO.update(etudiant);
+            moduleDAO.update(module);
             System.out.println("L'étudiant " + etudiant.getNom() + " a été inscrit au module " + module.getNom());
         } else {
             System.out.println("Étudiant ou module introuvable.");
         }
     }
 
-    public void desinscrireEtudiantModule(String ine, Long moduleCode) {
+    public void desinscrireEtudiantModule(String ine, String moduleCode) {
         Etudiant etudiant = etudiantDAO.findById(ine);
-        Module module = moduleDAO.findById(moduleCode);
+        Module module = moduleDAO.findByCode(moduleCode);
 
         if (etudiant != null && module != null) {
-            etudiant.getModules().remove(module);
-            etudiantDAO.update(etudiant);
+            etudiantDAO.supprimerInscription(etudiant.getIne(), module.getId());
+//            Hibernate.initialize(etudiant.getModules());
+//            Hibernate.initialize(module.getEtudiants());
+//            etudiant.getModules().remove(module);
+//            module.getEtudiants().remove(etudiant);
+//            etudiantDAO.update(etudiant);
+//            moduleDAO.update(module);
             System.out.println("L'étudiant " + etudiant.getNom() + " a été désinscrit du module " + module.getNom());
         } else {
             System.out.println("Étudiant ou module introuvable.");
@@ -118,7 +151,7 @@ public class EtudiantService {
         return 0.0; // Si l'étudiant n'a pas de note, on considère une moyenne de 0.
     }
 
-    private double calculerMoyenneGenerale(Etudiant etudiant) {
+    public double calculerMoyenneGenerale(Etudiant etudiant) {
         List<Module> modules = etudiant.getModules();
         if (modules.isEmpty()) return 0.0;
 
@@ -224,7 +257,16 @@ public class EtudiantService {
     }
 
     public double calculerMoyenneEtudiant(Etudiant etudiant) {
-        List<Module> modules = etudiant.getModules();
+        // Obtenir l'EntityManager
+        EntityManager em = etudiantDAO.getEntityManager();
+        // Requête pour récupérer les modules de l'étudiant par son INE
+        TypedQuery<Module> query = em.createQuery(
+                "SELECT m FROM Etudiant e JOIN e.modules m WHERE e.ine = :ine",
+                Module.class
+        );
+        query.setParameter("ine", etudiant.getIne());  // Utilisation du INE de l'étudiant
+        List<Module> modules = query.getResultList();
+//        List<Module> modules = etudiant.getModules();
         if (modules.isEmpty()) return 0.0;
 
         double totalPoints = 0.0;

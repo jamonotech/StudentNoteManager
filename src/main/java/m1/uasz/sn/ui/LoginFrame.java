@@ -1,7 +1,9 @@
 package m1.uasz.sn.ui;
 
-import m1.uasz.sn.dao.UtilisateurDAO;
 import m1.uasz.sn.services.UtilisateurService;
+import m1.uasz.sn.ui.components.Action_Validation.ComponentAction;
+import m1.uasz.sn.ui.components.Action_Validation.ComponentValidation;
+import m1.uasz.sn.ui.components.Forms.Formulaire11ChampsFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -80,11 +82,19 @@ public class LoginFrame extends JFrame {
         styleLinkLabel(forgotPasswordLabel);
         loginPanel.add(forgotPasswordLabel, gbc);
 
-        gbc.gridy = 8;
-        gbc.gridwidth = 2;
+        // Liens
+        gbc.gridy = 8; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         JLabel registerLabel = new JLabel("<html><font color='#FFFFFF'>Pas de compte ?</font> <a href='#'>S'inscrire</a></html>");
         styleLinkLabel(registerLabel);
+        registerLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Action à effectuer lors du clic
+                String[] champs = {"Type", "Nom", "Prénom", "Email", "Mot de Passe", "Confirmer Mot de Passe"};
+                JTextField[] textFields = new JTextField[champs.length];
+                new Formulaire11ChampsFrame("Ajouter utilisateur", "create", "users", champs, textFields, 500, 500, new ComponentValidation(), new ComponentAction());
+            }
+        });
         loginPanel.add(registerLabel, gbc);
 
         // Action du bouton de connexion
