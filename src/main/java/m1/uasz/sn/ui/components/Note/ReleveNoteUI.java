@@ -1,7 +1,8 @@
-package m1.uasz.sn.ui.components;
+package m1.uasz.sn.ui.components.Note;
 
 import m1.uasz.sn.models.Etudiant;
 import m1.uasz.sn.services.EtudiantService;
+import m1.uasz.sn.ui.components.PanelShape.*;
 
 import javax.swing.*;
 import java.awt.*;

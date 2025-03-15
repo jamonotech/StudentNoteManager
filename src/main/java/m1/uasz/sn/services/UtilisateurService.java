@@ -2,6 +2,7 @@ package m1.uasz.sn.services;
 
 import m1.uasz.sn.dao.UtilisateurDAO;
 import m1.uasz.sn.models.Utilisateur;
+import m1.uasz.sn.utils.SessionManager;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
@@ -27,6 +28,15 @@ public class UtilisateurService {
     }
 
     public void modifierUtilisateur(Utilisateur utilisateur) {
+        String password = utilisateur.getPassword();
+
+        // Vérifier si le mot de passe est déjà haché
+        if (!password.startsWith("$2a$") && !password.startsWith("$2b$") && !password.startsWith("$2y$")) {
+            // Hacher le mot de passe s'il n'est pas encore haché
+            password = BCrypt.hashpw(password, BCrypt.gensalt());
+        }
+
+        utilisateur.setPassword(password);
         utilisateurDAO.update(utilisateur);
     }
 
@@ -60,7 +70,7 @@ public class UtilisateurService {
         Utilisateur utilisateur = utilisateurDAO.findByEmail(email);
 
         if (utilisateur != null && BCrypt.checkpw(password, utilisateur.getPassword())) {
-            this.utilisateurConnecte = utilisateur;
+            SessionManager.setUtilisateurConnecte(utilisateur);
             System.out.println("Connexion réussie pour " + email);
             return utilisateur;
         }
@@ -70,11 +80,11 @@ public class UtilisateurService {
     }
 
     public void deconnexion() {
-        this.utilisateurConnecte = null;
+        SessionManager.deconnecter();
         System.out.println("Déconnexion réussie.");
     }
 
     public Utilisateur getUtilisateurConnecte() {
-        return utilisateurConnecte;
+        return SessionManager.getUtilisateurConnecte();
     }
 }

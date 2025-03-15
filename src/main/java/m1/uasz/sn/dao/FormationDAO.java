@@ -1,5 +1,6 @@
 package m1.uasz.sn.dao;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import m1.uasz.sn.models.Formation;
 
@@ -9,10 +10,18 @@ public class FormationDAO extends GenericDAO<Formation, Long> {
     }
 
     public Formation findByName(String name) {
-        TypedQuery<Formation> query = entityManager.createQuery(
+        EntityManager em = getEntityManager();
+        TypedQuery<Formation> query = em.createQuery(
                 "SELECT f FROM Formation f WHERE f.nom = :nom", Formation.class);
         query.setParameter("nom", name);
+        return query.getResultStream().findFirst().orElse(null);
+    }
 
+    public Formation findById(Long name) {
+        EntityManager em = getEntityManager();
+        TypedQuery<Formation> query = em.createQuery(
+                "SELECT f FROM Formation f WHERE f.id = :nom", Formation.class);
+        query.setParameter("nom", name);
         return query.getResultStream().findFirst().orElse(null);
     }
 }

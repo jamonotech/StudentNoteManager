@@ -24,6 +24,10 @@ public class NoteService {
         return noteDAO.findById(id);
     }
 
+    public Note trouverNoteParEtudiantModule(Etudiant etudiant, Module module) {
+        return noteDAO.findNoteByEtudiantAndModule(etudiant, module);
+    }
+
     public List<Note> listerNote() {
         return noteDAO.findAll();
     }

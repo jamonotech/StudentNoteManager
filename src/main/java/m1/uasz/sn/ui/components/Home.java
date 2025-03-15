@@ -2,7 +2,7 @@ package m1.uasz.sn.ui.components;
 
 import m1.uasz.sn.models.Etudiant;
 import m1.uasz.sn.services.*;
-
+import m1.uasz.sn.ui.MainFrame;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +10,13 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 
+import m1.uasz.sn.ui.components.PanelShape.*;
+
 public class Home extends RoundedSideBar {
     private final StatistiquesService statistiquesService = new StatistiquesService();
 
     public Home() {
-        super(80, 80, true, true, true, true);
+        super(80, 80, false, false, true, true);
         setPreferredSize(new Dimension(getWidth(), getHeight()));
         setLayout(new BorderLayout());
         setBackground(new Color(4, 125, 154)); // Fond gris clair
