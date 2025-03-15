@@ -18,11 +18,13 @@ public abstract class Utilisateur {
     @Column(unique = true)
     private String email;
     private String password;
+    private String role;
 
     public Utilisateur(String nom, String prenom, String email, String password) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.password = password;
+        this.role = "ENSEIGNANT";
     }
 }
