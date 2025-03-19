@@ -356,13 +356,21 @@ public class NotePanel extends RoundedSideBar {
                     Etudiant etudiant = etudiantService.trouverEtudiant(ine);
                     Module module = moduleService.trouverModuleParCode(moduleCode);
 
+                    if (etudiant == null || module == null) {
+                        JOptionPane.showMessageDialog(this,
+                                "Etudiant ou Module non trouvé avec ces identifiants.",
+                                "Erreurs données fournies",
+                                JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+
                     // Vérification 1 : Est-ce que l'enseignant responsable du module est bien l'utilisateur connecté ?
                     if (!module.getEnseignantResponsable().getEmail().equals(utilisateurService.getUtilisateurConnecte().getEmail())) {
                         JOptionPane.showMessageDialog(this,
                                 "Vous ne pouvez pas noter le module " + moduleCode + " " + module.getNom() + ". Il ne vous est pas assigné.",
                                 "Accès refusé",
                                 JOptionPane.ERROR_MESSAGE);
-                        continue; // Arrêter l'importation
+                        break; // Arrêter l'importation
                     }
 
                     // Vérification 2 : L'étudiant est-il bien inscrit au module ?

@@ -105,7 +105,7 @@ public class StatistiquesUI extends RoundedSideBar {
         Etudiant meilleurEtudiant = statistiquesService.getMeilleurEtudiantFormation(formation);
         double meilleureMoyenne = statistiquesService.getMeilleureMoyenneFormation(formation);
 
-        String nomMeilleurEtudiant = (meilleurEtudiant != null) ? meilleurEtudiant.getNom() : "N/A";
+        String nomMeilleurEtudiant = (meilleurEtudiant != null) ? meilleurEtudiant.getPrenoms()+" "+meilleurEtudiant.getNom() : "N/A";
         String majorantText = (nomMeilleurEtudiant != null) ?
                 (nomMeilleurEtudiant + " \n" +
                         df.format(meilleureMoyenne))

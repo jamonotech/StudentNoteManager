@@ -8,7 +8,6 @@ import m1.uasz.sn.models.Enseignant;
 import m1.uasz.sn.models.ResponsablePedagogique;
 
 import java.util.List;
-import java.util.Optional;
 
 public abstract class GenericDAO<T, ID> {
     private static final EntityManagerFactory ENTITY_MANAGER_FACTORY =
@@ -26,6 +25,42 @@ public abstract class GenericDAO<T, ID> {
 
     public void create(T entity) {
         executeTransaction(em -> em.persist(entity));
+    }
+
+    public T findById(ID id) {
+        try (EntityManager em = getEntityManager()) {
+            return em.find(entityClass, id);
+        }
+    }
+
+    public List<T> findAll() {
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e", entityClass);
+            return query.getResultList();
+        }
+    }
+
+    public void update(T entity) {
+        executeTransaction(em -> em.merge(entity));
+    }
+
+    public void delete(T entity) {
+        executeTransaction(em -> {
+            T attachedEntity = entity;
+            if (!em.contains(attachedEntity)) {
+                attachedEntity = em.merge(attachedEntity);
+            }
+            em.remove(attachedEntity);
+        });
+    }
+
+    public void deleteById(ID id) {
+        executeTransaction(em -> {
+            T entity = em.find(entityClass, id);
+            if (entity != null) {
+                em.remove(entity);
+            }
+        });
     }
 
     public void createEns(Enseignant enseignant) {
@@ -48,47 +83,10 @@ public abstract class GenericDAO<T, ID> {
         });
     }
 
-    public T findById(ID id) {
+    public void executeTransaction(TransactionAction action) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(entityClass, id);  // Peut retourner null si l'entité n'existe pas
-        } finally {
-            em.close();
-        }
-    }
-
-    public List<T> findAll() {
-        EntityManager em = getEntityManager();
-        TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityClass.getSimpleName() + " e", entityClass);
-        List<T> results = query.getResultList();
-        em.close();
-        return results;
-    }
-
-    public void update(T entity) {
-        executeTransaction(em -> em.merge(entity));
-    }
-
-    public void delete(T entity) {
-        executeTransaction(em -> {
-            T mergedEntity = em.contains(entity) ? entity : em.merge(entity);
-            em.remove(mergedEntity);
-        });
-    }
-
-    public void deleteById(ID id) {
-        executeTransaction(em -> {
-            T entity = em.find(entityClass, id);
-            if (entity != null) {
-                em.remove(entity);
-            }
-        });
-    }
-
-    private void executeTransaction(TransactionAction action) {
-        EntityManager em = getEntityManager();
-        em.getTransaction().begin();
-        try {
+            em.getTransaction().begin();
             action.execute(em);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -100,7 +98,7 @@ public abstract class GenericDAO<T, ID> {
     }
 
     @FunctionalInterface
-    private interface TransactionAction {
+    public interface TransactionAction {
         void execute(EntityManager em);
     }
 }
