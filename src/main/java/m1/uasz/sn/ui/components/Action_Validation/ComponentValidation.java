@@ -1,9 +1,6 @@
 package m1.uasz.sn.ui.components.Action_Validation;
 
-import m1.uasz.sn.dao.EnseignantDAO;
-import m1.uasz.sn.dao.EtudiantDAO;
-import m1.uasz.sn.dao.ModuleDAO;
-import m1.uasz.sn.dao.NoteDAO;
+import m1.uasz.sn.dao.*;
 import m1.uasz.sn.models.Enseignant;
 import m1.uasz.sn.models.Etudiant;
 import m1.uasz.sn.models.Formation;
@@ -18,6 +15,7 @@ public class ComponentValidation implements FormValidationStrategy {
     private EnseignantService enseignantService = new EnseignantService();
     private EtudiantDAO etudiantDAO = new EtudiantDAO();
     private EnseignantDAO enseignantDAO = new EnseignantDAO();
+    private ResponsablePedagogiqueDAO responsablePedagogiqueDAO = new ResponsablePedagogiqueDAO();
     private FormationService formationService = new FormationService();
     private ModuleService moduleService = new ModuleService();
     private ModuleDAO moduleDAO = new ModuleDAO();
@@ -41,9 +39,11 @@ public class ComponentValidation implements FormValidationStrategy {
         }
 
         // Vérification du rôle avant validation
-        if (!"RESPONSABLE".equalsIgnoreCase(utilisateurService.getUtilisateurConnecte().getRole()) && !"marks".equals(callingComponent)) {
-            JOptionPane.showMessageDialog(null, "Vous n'êtes pas autorisé à valider ce formulaire ou à effectuer cette action !");
-            return false;
+        if (utilisateurService.getUtilisateurConnecte() != null) {
+            if (!"RESPONSABLE".equalsIgnoreCase(utilisateurService.getUtilisateurConnecte().getRole()) && !"marks".equals(callingComponent)) {
+                JOptionPane.showMessageDialog(null, "Vous n'êtes pas autorisé à valider ce formulaire ou à effectuer cette action !");
+                return false;
+            }
         }
 
         switch (callingComponent) {
@@ -79,7 +79,7 @@ public class ComponentValidation implements FormValidationStrategy {
             JOptionPane.showMessageDialog(null, "Les mots de passe ne correspondent pas !");
             return false;
         }
-        if (!role.equalsIgnoreCase("RESPONSABLE") && !role.equalsIgnoreCase("ENSEIGNANT")) {
+        if (utilisateurService.getUtilisateurConnecte() != null && !role.equalsIgnoreCase("RESPONSABLE") && !role.equalsIgnoreCase("ENSEIGNANT")) {
             JOptionPane.showMessageDialog(null, "Role ou type utilisateur inconnu !");
             return false;
         }
@@ -135,7 +135,7 @@ public class ComponentValidation implements FormValidationStrategy {
         String nomFormation = fields[0].getText();
         String niveauFormation = fields[1].getText();
         String responsable = fields[3].getText();
-        String baseEmail = enseignantDAO.findByEmail(responsable) != null ? enseignantDAO.findByEmail(responsable).getEmail() : null;
+        String baseEmail = responsablePedagogiqueDAO.findByEmail(responsable) != null ? responsablePedagogiqueDAO.findByEmail(responsable).getEmail() : null;
 
         if (nomFormation.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Le nom de la formation ne peut pas être vide !");

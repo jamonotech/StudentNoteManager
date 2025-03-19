@@ -76,6 +76,9 @@ public class ComponentAction implements FormActionStrategy {
 
     private void traiterUtilisateur(JTextField[] textFields, String typeForm) {
         String typeUser = textFields[0].getText();
+        if (utilisateurService.getUtilisateurConnecte() == null) {
+            typeUser = "ENSEIGNANT";
+        }
         String nom = textFields[1].getText();
         String prenom = textFields[2].getText();
         String email = textFields[3].getText();
