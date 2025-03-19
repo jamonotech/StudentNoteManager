@@ -344,46 +344,52 @@ public class NotePanel extends RoundedSideBar {
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
+            StringBuilder erreurs = new StringBuilder();
+
             try (Reader reader = new FileReader(selectedFile);
                  CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
 
+                // Vérification des en-têtes
+                if (!csvParser.getHeaderMap().containsKey("INE") ||
+                        !csvParser.getHeaderMap().containsKey("Code Module") ||
+                        !csvParser.getHeaderMap().containsKey("Note Controle") ||
+                        !csvParser.getHeaderMap().containsKey("Note Examen")) {
+
+                    JOptionPane.showMessageDialog(this,
+                            "Le fichier CSV ne contient pas les colonnes requises.",
+                            "Erreur format CSV",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 for (CSVRecord record : csvParser) {
-                    String ine = record.get("INE");
-                    String moduleCode = record.get("Code Module");
-                    double noteCC = Double.parseDouble(record.get("Note Controle"));
-                    double noteExamen = Double.parseDouble(record.get("Note Examen"));
+                    try {
+                        String ine = record.get("INE").trim();
+                        String moduleCode = record.get("Code Module").trim();
+                        double noteCC = Double.parseDouble(record.get("Note Controle").trim());
+                        double noteExamen = Double.parseDouble(record.get("Note Examen").trim());
 
-                    Etudiant etudiant = etudiantService.trouverEtudiant(ine);
-                    Module module = moduleService.trouverModuleParCode(moduleCode);
+                        Etudiant etudiant = etudiantService.trouverEtudiant(ine);
+                        Module module = moduleService.trouverModuleParCode(moduleCode);
 
-                    if (etudiant == null || module == null) {
-                        JOptionPane.showMessageDialog(this,
-                                "Etudiant ou Module non trouvé avec ces identifiants.",
-                                "Erreurs données fournies",
-                                JOptionPane.ERROR_MESSAGE);
-                        break;
-                    }
+                        if (etudiant == null || module == null) {
+                            erreurs.append("Etudiant ou module introuvable : INE=").append(ine).append(", Module=").append(moduleCode).append("\n");
+                            continue;
+                        }
 
-                    // Vérification 1 : Est-ce que l'enseignant responsable du module est bien l'utilisateur connecté ?
-                    if (!module.getEnseignantResponsable().getEmail().equals(utilisateurService.getUtilisateurConnecte().getEmail())) {
-                        JOptionPane.showMessageDialog(this,
-                                "Vous ne pouvez pas noter le module " + moduleCode + " " + module.getNom() + ". Il ne vous est pas assigné.",
-                                "Accès refusé",
-                                JOptionPane.ERROR_MESSAGE);
-                        break; // Arrêter l'importation
-                    }
+                        // Vérification 1 : L'enseignant responsable du module est-il l'utilisateur connecté ?
+                        if (!module.getEnseignantResponsable().getEmail().equals(utilisateurService.getUtilisateurConnecte().getEmail())) {
+                            erreurs.append("Vous n'êtes pas autorisé à noter le module ").append(moduleCode).append("\n");
+                            continue;
+                        }
 
-                    // Vérification 2 : L'étudiant est-il bien inscrit au module ?
-                    if (etudiantDAO.findModuleByEtudiant(module, etudiant) == null) {
-                        JOptionPane.showMessageDialog(this,
-                                "L'étudiant " + ine + " " + etudiant.getPrenoms() + " n'est pas inscrit au module " + moduleCode,
-                                "Erreur d'inscription",
-                                JOptionPane.WARNING_MESSAGE);
-                        continue; // Passer à l'étudiant suivant
-                    }
+                        // Vérification 2 : L'étudiant est-il inscrit au module ?
+                        if (etudiantDAO.findModuleByEtudiant(module, etudiant) == null) {
+                            erreurs.append("L'étudiant ").append(ine).append(" n'est pas inscrit au module ").append(moduleCode).append("\n");
+                            continue;
+                        }
 
-                    // Traitement des notes après validation
-                    if (etudiant != null && module != null) {
+                        // Traitement des notes après validation
                         Note note = noteDAO.findNoteByEtudiantAndModule(etudiant, module);
                         if (note == null) {
                             note = new Note();
@@ -397,13 +403,23 @@ public class NotePanel extends RoundedSideBar {
                             note.setNoteExamen(noteExamen);
                             noteService.modifierNote(note);
                         }
+
+                    } catch (NumberFormatException e) {
+                        erreurs.append("Erreur de format pour la note dans la ligne : ").append(record).append("\n");
                     }
                 }
-                JOptionPane.showMessageDialog(this, "Importation terminée avec succès !");
+
+                if (erreurs.length() > 0) {
+                    JOptionPane.showMessageDialog(this, erreurs.toString(), "Erreurs d'importation", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Importation terminée avec succès !");
+                }
+
                 loadNotes();
-            } catch (Exception e) {
+
+            } catch (IOException e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Erreur lors de l'importation du fichier CSV", "Erreur", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Erreur lors de la lecture du fichier CSV", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

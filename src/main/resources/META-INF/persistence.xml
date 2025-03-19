@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
-http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
     <persistence-unit name="club_persistence_unit" transaction-type="RESOURCE_LOCAL">
         <class>m1.uasz.sn.models.Module</class>
         <class>m1.uasz.sn.models.Enseignant</class>
@@ -9,23 +11,30 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
         <class>m1.uasz.sn.models.Note</class>
         <class>m1.uasz.sn.models.ResponsablePedagogique</class>
         <class>m1.uasz.sn.models.Utilisateur</class>
+
         <properties>
+            <!-- Connexion à la base de données -->
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestion_notes?serverTimezone=UTC"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="0002"/>
+
+            <!-- Configuration Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-            <property name="hibernate.connection.release_mode" value="auto"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
-            <!-- Utiliser HikariCP -->
+            <property name="hibernate.connection.autocommit" value="false"/>
+            <property name="hibernate.connection.release_mode" value="auto"/>
+
+            <!-- Configuration HikariCP (Gestion avancée du pool de connexions) -->
             <property name="hibernate.connection.provider_class" value="org.hibernate.hikaricp.internal.HikariCPConnectionProvider"/>
-            <property name="hibernate.hikari.maximumPoolSize" value="500"/>
-            <property name="hibernate.hikari.minimumIdle" value="2"/>
-            <property name="hibernate.hikari.idleTimeout" value="30000"/>
-            <property name="hibernate.hikari.maxLifetime" value="600000"/>
-            <property name="hibernate.hikari.connectionTimeout" value="300000"/>
+            <property name="hikari.maximumPoolSize" value="10"/>
+            <property name="hikari.minimumIdle" value="2"/>
+            <property name="hikari.idleTimeout" value="30000"/>
+            <property name="hikari.maxLifetime" value="600000"/>
+            <property name="hikari.connectionTimeout" value="30000"/>
+            <property name="hikari.leakDetectionThreshold" value="20000"/>
         </properties>
     </persistence-unit>
 </persistence>

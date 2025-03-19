@@ -12,16 +12,13 @@ public class ResponsablePedagogiqueDAO extends GenericDAO<ResponsablePedagogique
     }
 
     public ResponsablePedagogique findByEmail(String email) {
-        EntityManager em = getEntityManager();
-        try {
+        try (EntityManager em = getEntityManager()) {
             TypedQuery<ResponsablePedagogique> query = em.createQuery(
                     "SELECT u FROM ResponsablePedagogique u WHERE u.email = :email", ResponsablePedagogique.class);
             query.setParameter("email", email);
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
-        } finally {
-            em.close();
         }
     }
 }
