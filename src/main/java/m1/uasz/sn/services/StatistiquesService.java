@@ -61,10 +61,10 @@ public class StatistiquesService {
         return (meilleur != null) ? etudiantService.calculerMoyenneEtudiant(meilleur) : 0.0;
     }
 
-//    Pour les formations
-public int getEffectifFormation(Formation formation) {
-    return etudiantDAO.findEtudiantsByFormation(formation).size();
-}
+    //    Pour les formations
+    public int getEffectifFormation(Formation formation) {
+        return etudiantDAO.findEtudiantsByFormation(formation).size();
+    }
 
     public int getNombreAdmisFormation(Formation formation) {
         List<Etudiant> etudiants = etudiantDAO.findEtudiantsByFormation(formation);

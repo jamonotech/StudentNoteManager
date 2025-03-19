@@ -13,8 +13,7 @@ public class NoteDAO extends GenericDAO<Note, Long> {
     }
 
     public Note findNoteByEtudiantAndModule(Etudiant etudiant, Module module) {
-        EntityManager em = getEntityManager();
-        try {
+        try (EntityManager em = getEntityManager()) {
             TypedQuery<Note> query = em.createQuery(
                     "SELECT n FROM Note n WHERE n.etudiant = :etudiant AND n.module = :module", Note.class);
             query.setParameter("etudiant", etudiant);
@@ -22,8 +21,6 @@ public class NoteDAO extends GenericDAO<Note, Long> {
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
-        } finally {
-            em.close();
         }
     }
 }

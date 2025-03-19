@@ -12,24 +12,22 @@ public class EnseignantDAO extends GenericDAO<Enseignant, String> {
     }
 
     public Enseignant findByMatricule(String matricule) {
-        EntityManager em = getEntityManager();
-        TypedQuery<Enseignant> query = em.createQuery(
-                "SELECT f FROM Enseignant f WHERE f.matricule = :matricule", Enseignant.class);
-        query.setParameter("matricule", matricule);
-        return query.getResultStream().findFirst().orElse(null);
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Enseignant> query = em.createQuery(
+                    "SELECT f FROM Enseignant f WHERE f.matricule = :matricule", Enseignant.class);
+            query.setParameter("matricule", matricule);
+            return query.getResultStream().findFirst().orElse(null);
+        }
     }
 
     public Enseignant findByEmail(String email) {
-        EntityManager em = getEntityManager();
-        try {
+        try (EntityManager em = getEntityManager()) {
             TypedQuery<Enseignant> query = em.createQuery(
                     "SELECT u FROM Enseignant u WHERE u.email = :email", Enseignant.class);
             query.setParameter("email", email);
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
-        } finally {
-            em.close();
         }
     }
 }

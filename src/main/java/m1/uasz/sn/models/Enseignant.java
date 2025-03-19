@@ -13,13 +13,9 @@ import java.util.List;
 public class Enseignant extends Utilisateur {
     @Column(unique = true)
     private String matricule;
-//    private String prenoms;
-//    private String nom;
     private LocalDate dateNaissance;
     private String sexe;
     private String adresse;
-//    @Column(unique = true)
-//    private String email;
     private String grade;
     private String specialite;
     private String bureau;
