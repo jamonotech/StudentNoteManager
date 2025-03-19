@@ -152,30 +152,4 @@ public class TablesRendererEditor extends AbstractCellEditor implements TableCel
     public Object getCellEditorValue() {
         return "";
     }
-
-//    private void addListeners() {
-//        editIcon.addMouseListener(new MouseAdapter() {
-//            public void mouseClicked(MouseEvent evt) {
-//                if (table != null) {
-//                    Object id = table.getValueAt(row, 0);
-//                    System.out.println("Modifier l'utilisateur ID : " + id);
-//                    new Formulaire11ChampsFrame("Modifier utilisateur", "update", "users",
-//                            champsForm(), new JTextField[champsForm().length], 500, 500,
-//                            new ComponentValidation(), new ComponentAction());
-//                }
-//            }
-//        });
-//
-//        deleteIcon.addMouseListener(new MouseAdapter() {
-//            public void mouseClicked(MouseEvent evt) {
-//                if (table != null) {
-//                    Object id = table.getValueAt(row, 0);
-//                    System.out.println("Supprimer l'utilisateur ID : " + id);
-//                    new Formulaire11ChampsFrame("Supprimer utilisateur", "delete", "users",
-//                            champsForm(), new JTextField[champsForm().length], 500, 500,
-//                            new ComponentValidation(), new ComponentAction());
-//                }
-//            }
-//        });
-//    }
 }

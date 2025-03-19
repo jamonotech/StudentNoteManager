@@ -228,6 +228,7 @@ public class MainFrame extends JFrame {
         rightPanel.setOpaque(false);
         ImageIcon menuIcon = getResizedIcon("/img/icons/8666601_more_vertical_icon.png", 30, 30);
         JLabel menuLabel = new JLabel(menuIcon);
+        menuLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         // Création du menu déroulant stylisé
         JPopupMenu userMenu = new JPopupMenu();

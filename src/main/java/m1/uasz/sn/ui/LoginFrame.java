@@ -20,7 +20,7 @@ public class LoginFrame extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 //        setLocationRelativeTo(null);
 
-        BackgroundPanel panel = new BackgroundPanel("src/main/resources/img/background/b5.jpg");
+        BackgroundPanel panel = new BackgroundPanel("src/main/resources/img/background/b20.jpg");
         panel.setLayout(new GridBagLayout());
 
         JPanel loginPanel = new JPanel(new GridBagLayout());
@@ -201,7 +201,7 @@ public class LoginFrame extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        new LoginFrame();
-    }
+//    public static void main(String[] args) {
+//        new LoginFrame();
+//    }
 }
