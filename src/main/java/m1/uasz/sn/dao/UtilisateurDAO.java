@@ -11,16 +11,13 @@ public class UtilisateurDAO extends GenericDAO<Utilisateur, Long> {
     }
 
     public Utilisateur findByEmail(String email) {
-        EntityManager em = getEntityManager();
-        try {
+        try (EntityManager em = getEntityManager()) {
             TypedQuery<Utilisateur> query = em.createQuery(
                     "SELECT u FROM Utilisateur u WHERE u.email = :email", Utilisateur.class);
             query.setParameter("email", email);
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
-        } finally {
-            em.close();
         }
     }
 }

@@ -10,18 +10,20 @@ public class FormationDAO extends GenericDAO<Formation, Long> {
     }
 
     public Formation findByName(String name) {
-        EntityManager em = getEntityManager();
-        TypedQuery<Formation> query = em.createQuery(
-                "SELECT f FROM Formation f WHERE f.nom = :nom", Formation.class);
-        query.setParameter("nom", name);
-        return query.getResultStream().findFirst().orElse(null);
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Formation> query = em.createQuery(
+                    "SELECT f FROM Formation f WHERE f.nom = :nom", Formation.class);
+            query.setParameter("nom", name);
+            return query.getResultStream().findFirst().orElse(null);
+        }
     }
 
     public Formation findById(Long name) {
-        EntityManager em = getEntityManager();
-        TypedQuery<Formation> query = em.createQuery(
-                "SELECT f FROM Formation f WHERE f.id = :nom", Formation.class);
-        query.setParameter("nom", name);
-        return query.getResultStream().findFirst().orElse(null);
+        try (EntityManager em = getEntityManager()) {
+            TypedQuery<Formation> query = em.createQuery(
+                    "SELECT f FROM Formation f WHERE f.id = :nom", Formation.class);
+            query.setParameter("nom", name);
+            return query.getResultStream().findFirst().orElse(null);
+        }
     }
 }
