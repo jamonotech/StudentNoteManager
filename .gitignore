@@ -29,3 +29,6 @@ Thumbs.db
 # Ignorer la configuration de la base de données
 /src/main/resources/META-INF/persistence.xml
 
+livrables_Project_PA/
+
+
