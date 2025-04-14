@@ -21,6 +21,7 @@ public class LoginFrame extends JFrame {
 //        setLocationRelativeTo(null);
 
         BackgroundPanel panel = new BackgroundPanel("/img/background/b20.jpg");
+        
         panel.setLayout(new GridBagLayout());
 
         JPanel loginPanel = new JPanel(new GridBagLayout());
