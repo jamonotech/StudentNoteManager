@@ -27,8 +27,12 @@ public class MainApp {
                     "responsable@zig-uasz.sn",
                     "responsable"
             );
-            responsable.setRole("RESPONSABLE");
+            responsable.setNom("Responsable");
+            responsable.setPrenom("Responsable");
+            responsable.setRole("responsable".toUpperCase());
+            responsable.setPassword("responsable");
             service.enregistrerUtilisateur(responsable, "responsable");
+            service.connexion("responsable@zig-uasz.sn", "responsable");
 
             System.out.println("Utilisateur RESPONSABLE ajouté par défaut.");
         }
