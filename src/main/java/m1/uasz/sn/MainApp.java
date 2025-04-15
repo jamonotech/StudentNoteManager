@@ -21,14 +21,14 @@ public class MainApp {
                 .anyMatch(u -> "RESPONSABLE".equalsIgnoreCase(u.getRole()));
 
         if (!responsableExiste) {
-            Utilisateur responsable = new ResponsablePedagogique();
-            responsable.setNom("Admin");
-            responsable.setPrenom("Principal");
-            responsable.setEmail("admin@zig-uasz.sn");
+            Utilisateur responsable = new ResponsablePedagogique(
+                    "Responsable",
+                    "Responsable",
+                    "responsable@zig-uasz.sn",
+                    "responsable"
+            );
             responsable.setRole("RESPONSABLE");
-
-            String motDePasse = "admin"; // Tu peux forcer un changement au 1er login si besoin
-            service.enregistrerUtilisateur(responsable, motDePasse);
+            service.enregistrerUtilisateur(responsable, "responsable");
 
             System.out.println("Utilisateur RESPONSABLE ajouté par défaut.");
         }
