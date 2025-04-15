@@ -86,12 +86,23 @@ public class ComponentAction implements FormActionStrategy {
 
         switch (typeForm) {
             case "create":
-                Utilisateur user = new ResponsablePedagogique(nom, prenom, email, password);
-                user.setNom(nom);
-                user.setPrenom(prenom);
-                user.setRole(typeUser.toUpperCase());
-                user.setPassword(password);
-                utilisateurService.enregistrerUtilisateur(user, password);
+                if (typeUser.equalsIgnoreCase("enseignant")){
+                    Enseignant enss = new Enseignant(null, prenom, nom, null, null, null, email, null, null, null, null);
+                    enss.setPassword(password);
+                    enss.setRole("ENSEIGNANT");
+                    enss.setNom(nom);
+                    enss.setPrenom(prenom);
+                    utilisateurService.enregistrerUtilisateur(enss, password);
+                    enseignantService.ajouterEnseignant(enss);
+                }
+                else {
+                    Utilisateur user = new ResponsablePedagogique(nom, prenom, email, password);
+                    user.setNom(nom);
+                    user.setPrenom(prenom);
+                    user.setRole(typeUser.toUpperCase());
+                    user.setPassword(password);
+                    utilisateurService.enregistrerUtilisateur(user, password);
+                }
 
                 JOptionPane.showMessageDialog(null, "Utilisateur ajouté avec succès !");
                 break;
